@@ -1,2 +1,2 @@
-#Identifying crack tip position and stress intensity factors from displacement
+Identifying crack tip position and stress intensity factors from displacement
 data
