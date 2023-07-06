@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Jun 06 12:46:21 2022
+Modified on Mon, Jul 3, 2023
 
 @author: Swati Gupta
 """
@@ -12,6 +13,7 @@ import numpy as np
 from os import walk
 import matplotlib.pyplot as plt
 import read_lmp_file
+
 
 # INPUT: path to dump files
 
@@ -30,6 +32,8 @@ def calcSIFs(mypath):
     K_field2 = np.zeros((lenF-1,6))  # Sep
     K_field3 = np.zeros((lenF-1,6))  # DC
     
+    pdb.set_trace()
+    
     prev = [520,0] #starting crack tip location guess
     lmpRef = 0 #dummy variable to indicate if lmp ref object is being passed
     discr = 2 #discretization size for Separability
@@ -38,7 +42,7 @@ def calcSIFs(mypath):
     const = [0.2832,71.8,25.81]
     
     startT = time.time()
-    for i in range(5,lenF-1):
+    for i in range(0,lenF-1):
         
         file1 = mypath+filenames[i+1]
         file2 = mypath+filenames[i]
@@ -52,6 +56,7 @@ def calcSIFs(mypath):
         # prev = cracktip1[i]
         prev = [prev[0]- (0.2 * i), prev[1]]
         lmpRef = 1
+        # confg = 1
         
     
     endT = time.time()
