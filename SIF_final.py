@@ -83,7 +83,6 @@ def SIF_projection(synData = 1, shape = 3, domainSize=10000,r2 = 50,alpha=1.5,no
     R2 = r2
     R1 = r2/(alpha**2)
     boxsize = 4*R2 
-    # pdb.set_trace()
     tip_guess = guess
     K_app = np.array(K_app)
     
@@ -111,8 +110,10 @@ def SIF_projection(synData = 1, shape = 3, domainSize=10000,r2 = 50,alpha=1.5,no
         
         dx = dx = np.array(coords - coords_ref)
         if synData == 2:
-            lb = np.array([min(coords_ref[:,0]), 20+(min(coords_ref[:,1])/4)])
-            ub = np.array([max(coords_ref[:,0]/2), 30+(max(coords_ref[:,1])/4)])
+            # lb = np.array([min(coords_ref[:,0]), 20+(min(coords_ref[:,1])/4)])
+            # ub = np.array([max(coords_ref[:,0]/2), 30+(max(coords_ref[:,1])/4)])
+            lb = np.array([guess[0]-(R2/2), -R2/5])
+            ub = np.array([guess[0]+(R2/2), R2/5])
         else:
             lb = np.array([min(coords[:,0]), min(coords[:,1])])
             ub = np.array([max(coords[:,0]), max(coords[:,1])])
