@@ -81,7 +81,7 @@ def SIF_projection(synData = 1, shape = 3, domainSize=10000,r2 = 50,alpha=1.5,no
     global R1, R2, boxsize, tip_guess, poisson, E, kolosov, shear_modulus
     
     R2 = r2
-    R1 = r2/(alpha**2)
+    R1 = r2/(alpha)
     boxsize = 4*R2 
     tip_guess = guess
     K_app = np.array(K_app)
@@ -295,7 +295,7 @@ def find_sep_cracktip(coords,DX,h,alpha,noise=0,K_app='unknown',synData = 0):
     XX = XX.flatten('F')
     YY = YY.flatten('F')
     
-    Rinner = [R1, alpha*R1]; # inner radius of sub-annuli
+    Rinner = [R1, np.sqrt(alpha)*R1]; # inner radius of sub-annuli
     cf = np.zeros((XX.size,1))
 
     #loop over all crack tip positions
@@ -348,7 +348,7 @@ def costFuncSep(guess,coords,DX,alpha):
     dy = DX[:,1]
     
     avg_disp = np.zeros((num_subannuli, 2)) #average displacement components for each subannuli
-    Rinner = [R1, alpha*R1]; # inner radius of sub-annuli
+    Rinner = [R1,  np.sqrt(alpha)*R1]; # inner radius of sub-annuli
        
     [theta,r] = cart2pol(coords[:,0]-guess[0], coords[:,1]-guess[1]);
     
