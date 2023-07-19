@@ -306,7 +306,7 @@ def find_sep_cracktip(coords,DX,h,alpha,noise=0,K_app='unknown',synData = 0):
         
         #loop over sub annuli
         for kk in range(0,num_subannuli):
-            ids = np.where((r >= Rinner[kk]) & (r < alpha*Rinner[kk]))[0]  
+            ids = np.where((r >= Rinner[kk]) & (r < np.sqrt(alpha)*Rinner[kk]))[0]  
             # Note: brackets within the above condition between '&' are important
             if len(ids) == 0:  
                 # Make the value nan so that
@@ -353,7 +353,7 @@ def costFuncSep(guess,coords,DX,alpha):
     [theta,r] = cart2pol(coords[:,0]-guess[0], coords[:,1]-guess[1]);
     
     for kk in range(0,num_subannuli):
-        ids = np.where((r >= Rinner[kk]) & (r < alpha*Rinner[kk]))[0]  
+        ids = np.where((r >= Rinner[kk]) & (r < np.sqrt(alpha)*Rinner[kk]))[0]  
         # Note: brackets within the above condition between '&' are important
        
         avg_disp[kk,0] = np.mean(dx[ids])
