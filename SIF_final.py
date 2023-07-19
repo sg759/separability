@@ -151,7 +151,7 @@ def SIF_projection(synData = 1, shape = 3, domainSize=10000,r2 = 50,alpha=1.5,no
         print('CALCULATING SEPARABLE CRACK TIP LOCATION using Pattern Search\n')
         
         emp = np.array([])
-        funcSep = lambda x:costFuncSep(x,coords_ref,dx,alpha)
+        funcSep = lambda x:costFuncSep(x,coords_ref,dx,np.sqrt(alpha))
         cracktip2, cfSep, iterations, alpha, evaluations, history, exit_cause = \
             psifa(funcSep,np.array(guess), emp,emp,emp,2,lb,ub)
         
@@ -161,7 +161,7 @@ def SIF_projection(synData = 1, shape = 3, domainSize=10000,r2 = 50,alpha=1.5,no
         
         print('CALCULATING SEPARABLE CRACK TIP LOCATION\n')
         cracktip2 = tip_guess      
-        cracktip2,cfSep = find_sep_cracktip(coords_ref,dx,h,alpha,noise,K_app, synData)
+        cracktip2,cfSep = find_sep_cracktip(coords_ref,dx,h,np.sqrt(alpha),noise,K_app, synData)
        
         cracktip2 = [cracktip2[1], cracktip2[0]]
         print('CRACKTIP LOCATION USING SEPARABLE APPROACH\: \n', cracktip2)
@@ -295,7 +295,7 @@ def find_sep_cracktip(coords,DX,h,alpha,noise=0,K_app='unknown',synData = 0):
     XX = XX.flatten('F')
     YY = YY.flatten('F')
     
-    Rinner = [R1, np.sqrt(alpha)*R1]; # inner radius of sub-annuli
+    Rinner = [R1,alpha*R1]; # inner radius of sub-annuli
     cf = np.zeros((XX.size,1))
 
     #loop over all crack tip positions
@@ -306,7 +306,7 @@ def find_sep_cracktip(coords,DX,h,alpha,noise=0,K_app='unknown',synData = 0):
         
         #loop over sub annuli
         for kk in range(0,num_subannuli):
-            ids = np.where((r >= Rinner[kk]) & (r < np.sqrt(alpha)*Rinner[kk]))[0]  
+            ids = np.where((r >= Rinner[kk]) & (r < alpha*Rinner[kk]))[0]  
             # Note: brackets within the above condition between '&' are important
             if len(ids) == 0:  
                 # Make the value nan so that
@@ -348,12 +348,12 @@ def costFuncSep(guess,coords,DX,alpha):
     dy = DX[:,1]
     
     avg_disp = np.zeros((num_subannuli, 2)) #average displacement components for each subannuli
-    Rinner = [R1,  np.sqrt(alpha)*R1]; # inner radius of sub-annuli
+    Rinner = [R1, (alpha)*R1]; # inner radius of sub-annuli
        
     [theta,r] = cart2pol(coords[:,0]-guess[0], coords[:,1]-guess[1]);
     
     for kk in range(0,num_subannuli):
-        ids = np.where((r >= Rinner[kk]) & (r < np.sqrt(alpha)*Rinner[kk]))[0]  
+        ids = np.where((r >= Rinner[kk]) & (r < alpha*Rinner[kk]))[0]  
         # Note: brackets within the above condition between '&' are important
        
         avg_disp[kk,0] = np.mean(dx[ids])
